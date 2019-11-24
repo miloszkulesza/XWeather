@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="XWeather.Views.NewItemPage"
+             Title="Add City">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="Cancel_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackLayout Spacing="20" Padding="15">
+                <Label Text="City" FontSize="Medium" />
+                <Entry x:Name="CityInput" Text="{Binding Item.Text}" FontSize="Small">
+                    <Entry.Triggers>
+                        <EventTrigger Event="TextChanged" />
+                    </Entry.Triggers>
+                </Entry>
+            </StackLayout>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackLayout Spacing="20" Padding="15">
+                <ListView ItemsSource="{Binding Cities}" SelectedItem="{Binding SelectedCity}"
+                          x:Name="CitiesList" PropertyChanged="CitiesList_PropertyChanged"
+                          ItemSelected="OnSelectedCity">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Label Text="{Binding Name}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
