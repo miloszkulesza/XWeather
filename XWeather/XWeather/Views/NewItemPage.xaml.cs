@@ -66,13 +66,16 @@ namespace XWeather.Views
 
         public async static Task LoadCitiesList()
         {
-            var assembly = typeof(MainPage).GetTypeInfo().Assembly;
-            var jsonFileName = "city.list.json";
-            Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{jsonFileName}");
-            using (var reader = new System.IO.StreamReader(stream))
+            if (AllCities == null || AllCities.Count == 0)
             {
-                var jsonString = await reader.ReadToEndAsync();
-                AllCities = JsonConvert.DeserializeObject<List<City>>(jsonString);
+                var assembly = typeof(MainPage).GetTypeInfo().Assembly;
+                var jsonFileName = "city.list.json";
+                Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{jsonFileName}");
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    var jsonString = await reader.ReadToEndAsync();
+                    AllCities = JsonConvert.DeserializeObject<List<City>>(jsonString);
+                }
             }
         }
 

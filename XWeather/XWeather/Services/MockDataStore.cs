@@ -48,5 +48,10 @@ namespace XWeather.Services
         {
             return await Task.FromResult(items);
         }
+
+        public void ClearStore()
+        {
+            items.Clear();
+        }
     }
 }

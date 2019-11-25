@@ -15,6 +15,7 @@ namespace XWeather
         public IDataStore<City> DataStore => DependencyService.Get<IDataStore<City>>();
         private string selectedCitiesPath = Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "Data");
         private string selectedCitiesFileName = "selected.cities.json";
+        private List<City> CitiesFromFile = new List<City>();
         public App()
         {
             InitializeComponent();
@@ -28,10 +29,10 @@ namespace XWeather
             await NewItemPage.LoadCitiesList();
             var selectedCitiesExists = File.Exists(Path.Combine(selectedCitiesPath, selectedCitiesFileName));
             var directoryExists = Directory.Exists(selectedCitiesPath);
-            if(selectedCitiesExists)
+            CitiesFromFile = JsonConvert.DeserializeObject<List<City>>(File.ReadAllText(Path.Combine(selectedCitiesPath, selectedCitiesFileName)));
+            if (selectedCitiesExists)
             {
-                var selectedCities = JsonConvert.DeserializeObject<List<City>>(File.ReadAllText(Path.Combine(selectedCitiesPath, selectedCitiesFileName)));
-                foreach(var city in selectedCities)
+                foreach(var city in CitiesFromFile)
                 {
                     await DataStore.AddItemAsync(city);
                 }
@@ -47,6 +48,7 @@ namespace XWeather
             var selectedCities = await DataStore.GetItemsAsync();
             var stringContent = JsonConvert.SerializeObject(selectedCities);
             File.WriteAllText(Path.Combine(selectedCitiesPath, selectedCitiesFileName), stringContent);
+            DataStore.ClearStore();
         }
 
         protected override void OnResume()
